@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自定义指令</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+<div id="main">
+    <input type="text" v-focus>
+    <input type="text" v-color="{color:'red'}">
+    <input type="text" v-model="msg">
+    <div>{{reversedMessage}}</div>
+
+</div>
+
+<script>
+    /*Vue.directive('color',{
+       bind:function (el, binding) {
+           // 把新指令对应变量中的color值赋值给css的backgroundColor
+           el.style.backgroundColor = binding.value.color;
+       }
+    });*/
+
+    Vue.directive('focus',{
+        inserted:function (el) {
+            el.focus();
+        }
+    });
+    var main = new Vue({
+        el:'#main',
+        data:{
+            msg:''
+        },
+        methods:{
+        },
+        directives:{
+            color:{
+                bind:function (el, binding) {
+                    // 把新指令对应变量中的color值赋值给css的backgroundColor
+                    el.style.backgroundColor = binding.value.color;
+                }
+            }
+        },
+        computed:{
+            reversedMessage:function () {
+                return this.msg.split('').reverse();
+            }
+        }
+    })
+</script>
+</body>
+</html>

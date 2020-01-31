@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>V-blind</title>
+    <script src="vue.js"></script>
+    <style>
+        .acClass{
+            background-color: chocolate;
+            width: 100px;
+            height:100px;
+        }
+        .bcClass{
+            border: #090909 2px solid;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="main">
+    <div :class="objClass">测试</div>
+
+    <button @click="changeColor">改变</button>
+</div>
+<script>
+    var main = new Vue({
+        el:'#main',
+        data:{
+            objClass:{
+                acClass:true,
+                bcClass:true
+            }
+        },
+        methods:{
+            changeColor:function () {
+                this.objClass.bcClass= !this.objClass.bcClass;
+            }
+        }
+    })
+</script>
+</body>
+</html>

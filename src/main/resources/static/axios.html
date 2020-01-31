@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="main">
+    <input type="button" value="get" @click="getMethod">
+    <input type="button" value="post" @click="postMethod">
+    <div>{{joke}}</div>
+</div>
+
+<script>
+    var main = new Vue({
+        el:'#main',
+        data:{
+            joke:''
+        },
+        methods:{
+            getMethod:function () {
+                var $this = this;
+                axios.get("https://autumnfish.cn/api/joke?num=3")
+                    .then(function (success) {
+                        console.log(success.data);
+                  $this.joke = success.data;
+                },function (err) {
+                    alert(err);
+                })
+            },
+            postMethod:function () {
+                var $this = this;
+                axios.post("https://autumnfish.cn/api/joke",{'num':'3'})
+                    .then(function (success) {
+                        console.log(success);
+                  $this.joke = success;
+                },function (err) {
+                    alert(err);
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

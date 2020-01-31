@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        [v-cloak]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div v-text="message + '后缀'"></div>
+    <div v-cloak>
+        {{message + "后缀"}}
+    </div>
+    <hr>
+    <ul>
+        <li v-cloak>{{arrays[0]}}</li>
+        <li v-cloak>{{arrays[1]}}</li>
+        <li v-cloak>{{arrays[2]}}</li>
+    </ul>
+    <hr>
+    <span v-cloak>{{json.key1}}</span>
+    <span v-cloak>{{json.key2}}</span>
+
+    <hr>
+    <input type="button" v-on:click="alertWin" value="单机">
+    <input type="button" @dblclick="alertWin" value="双击">
+    字符串动态拼接: <div @click="append" v-cloak>{{message}}</div>
+    <hr>
+    计数器
+    <button @click="sub">-</button>
+    <span v-cloak>{{num}}</span>
+    <button @click="add">+</button>
+    <hr>
+    <h2 @click="changeShow">v-show测试</h2>
+    <div v-show="showFlag">这是一个傻瓜看不到的文字</div>
+    <div v-if="showFlag">这是一个傻瓜看不到的文字</div>
+
+    <hr>
+    <h2>测试v-blind</h2>
+    <div v-bind:class="showFlag?'t':'f'"></div>
+    <div :class="{'t':showFlag}"></div>
+
+    <hr>
+    <h2>测试v-for</h2>
+    <ul>
+        <li v-cloak v-for="(item,index) in arrays">
+            {{item + '-' + index}}
+        </li>
+    </ul>
+
+    <hr>
+    <h2>测试v-model</h2>
+    用户名：<input type="text" name="username" v-model="message">
+    <input type="button" value="改变文本框" @click="changeUserName">
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    var app = new Vue({
+        el:'#app',
+        data:{
+            message:'hello vue!',
+            arrays:['array1','array2','array3'],
+            json: {
+                key1:'val1',
+                key2:'val2'
+            },
+            num:5,
+            showFlag:true
+        },
+        methods:{
+            changeShow:function() {
+              this.showFlag = !this.showFlag
+            },
+            alertWin:function () {
+                alert("弹窗1")
+            },
+            append:function () {
+                this.message += '字符串动态拼接，';
+            },
+            add:function () {
+                if(this.num == 10) {
+                    alert("最大10！")
+                    return;
+                }
+                this.num ++;
+            },
+            sub:function () {
+                if(this.num == 0) {
+                    alert("最小0！")
+                    return;
+                }
+                this.num --;
+            },
+            changeUserName:function () {
+                this.message += '喜喜';
+            }
+        }
+    })
+</script>
+</body>
+</html>
