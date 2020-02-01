@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>props属性相关</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+<div id="main">
+    <hello title="你好吗"></hello>
+    <hr>
+    <hello :title="titles" pnum="12" pboo="true"></hello>
+    <h4>注意：number型和boolean型参数如果不加:那么会变成String类型</h4>
+    <h4>注意：而加了:则会有类型，如下面示例</h4>
+    <hello :title="titles" :pnum="12" :pboo="true" :parr="arrays" :pobj="obj"></hello>
+</div>
+
+<script>
+    var Hello = {
+      props:['title','pnum','pboo','parr','pobj'],
+      data:function () {
+          return {
+
+          };
+      },
+      template:'<div>' +
+          '<div>{{title}}</div>' +
+              '<div>{{typeof pnum}}</div>' +
+              '<div>{{typeof pboo}}</div>' +
+              '<div v-for="(item,index) in parr" :key="index">{{item}}</div>' +
+              '<div >{{pobj.name + "----" + pobj.age}}</div>' +
+          '</div>'
+    };
+    var main = new Vue({
+        el:'#main',
+        data:{
+            titles:'你好！',
+            arrays:['apple','orange','banana'],
+            obj:{
+                name:'zhangsan',
+                age:15
+            }
+        },
+        components:{
+            'hello':Hello
+        }
+    })
+</script>
+</body>
+</html>

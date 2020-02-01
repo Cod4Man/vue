@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件化开发</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+
+<div id="main">
+    <h2>组件是相互独立的，每个的count都不一致</h2>
+    <button-counter></button-counter>
+    <button-counter></button-counter>
+    <button-counter></button-counter>
+    <!--<HelloWorld></HelloWorld>--> <!--报错-->
+    <hello-world></hello-world>
+    <hello-tom></hello-tom>
+    <hello-jerry></hello-jerry>
+</div>
+
+<script>
+    Vue.component('HelloWorld',{ // 模板名也可以用驼峰命名，会自动转换，但是无法在html中使用(可以换成-写法)，只能在template中使用
+        data:function () {
+            return {
+                nihao:"HelloVueComponent"
+            };
+        },
+        template:'<div>{{nihao}}</div>'
+    });
+    Vue.component('button-counter',{
+        data:function () { // data必须为函数，否则会报错
+            return {
+                count:0
+            };
+        },
+        // template:'<button @click="handle">{{count}}</button>', // 组件的模板元素必须包含再同一个父标签中，<></><></>这样就会报错
+        template:`
+            <div>
+                <button @click="handle">{{count}}</button>
+                <button>模板字符</button>
+            </div>
+        `, // 模板字符（需要ES6语法支持）
+        methods:{
+            handle:function () {
+                this.count++;
+            }
+        }
+    });
+    var HelloTom = {
+        template:'<div>HelloTom</div>'
+    };
+    var HelloJerry = {
+        template:'<div>HelloJerry</div>'
+    };
+    var main = new Vue({
+        el:'#main',
+        data:{
+
+        },
+        components:{ // 局部组件
+            'hello-tom':HelloTom,
+            'hello-jerry':HelloJerry
+        }
+    })
+</script>
+</body>
+</html>

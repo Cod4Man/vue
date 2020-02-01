@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>侦听器watch</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+
+<div id="main">
+    姓氏：<input type="text" placeholder="姓氏" v-model="firstName"/>
+    <br>
+    名称：<input type="text" placeholder="名称" v-model="lastName"/>
+    <br>
+    姓名：<input type="text" readonly v-model="fullName"/>
+
+    <hr>
+    <h2>模拟用户名验证</h2>
+    用户名：<input type="text" v-model.lazy="uname">
+    <span>{{tip}}</span>
+</div>
+
+<script>
+    var main = new Vue({
+        el:'#main',
+        data:{
+            firstName:'',
+            lastName:'',
+            fullName:'',
+            tip:'',
+            uname:''
+        },
+        methods:{
+          checkUName:function (name) {
+              var that = this;
+              setTimeout(function () {
+                  if(name=="admin") {
+                      that.tip = '该用户名已存在，请重试！';
+                  } else {
+                      that.tip = '该用户名可以使用';
+                  }
+              },1500)
+          }
+        },
+        watch:{
+            firstName:function (val) {
+                this.fullName = val + ' ' + this.lastName;
+            },
+            lastName:function (val) {
+                this.fullName = this.firstName + ' ' + val;
+            },
+            uname:function (val) {
+                this.tip = 'loading...';
+                this.checkUName(val);
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数组操作</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+既可处理数组数据，也可处理对象数据
+<hr>
+<div id="main">
+    <ul>
+        <li :key="index" v-for="(item,index) in arrs">{{item}}</li>
+    </ul>
+    <!--<button @click="change">替换</button>-->
+    <hr>
+    <div>
+        {{obj.name}}
+            ---
+        {{obj.age}}
+            ---
+        {{obj.gender}}
+    </div>
+</div>
+<script>
+    var main = new Vue({
+        el:'#main',
+        data:{
+            arrs:['apple', 'orange', 'banana'],
+            obj:{
+                name:'xiaoming',
+                age: 5
+            }
+        },
+        methods:{
+        }
+    });
+    // 在实例外面操作试试
+    // main.obj.age = 15;
+    // main.arrs[0] = 'test';
+    // main.obj.gender = 'male';
+    // main.$set(main.obj,'gender','male');
+    // Vue.set(main.arrs, 0, 'test');
+    main.$set(main.arrs, 0, 'test');
+</script>
+</body>
+</html>
