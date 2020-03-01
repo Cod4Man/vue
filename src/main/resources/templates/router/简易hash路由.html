@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简易hash路由</title>
+    <script src="../../static/js/vue.js"></script>
+</head>
+<body>
+    <div id="main">
+        <a href="#/zhuye">主页</a>
+        <a href="#/xinwen">新闻</a>
+        <a href="#/caijing">财经</a>
+        <a href="#/yule">娱乐</a>
+        <hr>
+        <zhu-ye :style="{display:flag=='zhuye'?'':'none'}"></zhu-ye>
+        <xin-wen :style="{display:flag=='xinwen'?'':'none'}"></xin-wen>
+        <cai-jing :style="{display:flag=='caijing'?'':'none'}"></cai-jing>
+        <yu-le :style="{display:flag=='yule'?'':'none'}"></yu-le>
+    </div>
+    <script>
+        var InfoComponent = Vue.component('info-component',{
+            props:['info'],
+            data:function() {
+              return {
+              };
+            },
+            template:`
+            <div>
+                <strong>INFO:</strong>
+                <slot>{{info}}</slot>
+            </div>
+            `
+        });
+        var ZhuYe = {
+            data:function() {
+              return {
+                  info:'主页信息'
+              };
+            },
+            template:`
+            <info-component :info="info"></info-component>
+            `
+        };
+        var XinWen = {
+            data:function() {
+                return {
+                    info:'新闻信息'
+                };
+            },
+            template:`
+            <info-component :info="info"></info-component>
+            `
+        };
+        var CaiJing = {
+            data:function() {
+                return {
+                    info:'财经信息'
+                };
+            },
+            template:`
+            <info-component :info="info"></info-component>
+            `
+        };
+        var YuLe = {
+            data:function() {
+                return {
+                    info:'娱乐信息'
+                };
+            },
+            template:`
+            <info-component :info="info"></info-component>
+            `
+        };
+        var main = new Vue({
+            el:'#main',
+            data:{
+                flag:'zhuye'
+            },
+            components:{
+                'zhu-ye': ZhuYe,
+                'xin-wen': XinWen,
+                'cai-jing': CaiJing,
+                'yu-le': YuLe
+            }
+        });
+        // 监视hash变化函数
+        window.onhashchange = function () {
+            var fl = '';
+            switch (location.hash.slice(2)) {
+                case 'zhuye': fl='zhuye';break;
+                case 'caijing': fl = 'caijing';break;
+                case 'xinwen': fl = 'xinwen';break;
+                case 'yule': fl = 'yule';break;
+            }
+            // main.$set(main.data,main.data.flag,fl);
+            main.flag = fl;
+            console.log(location.hash.slice(2) + '====<>' + main.flag);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>父子组件间传值</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+<div id="main">
+    <component-relations @larger-text="size+=$event"></component-relations><!--此处的$event是固定写法-->
+    <div :style="{fontSize:size + 'px'}">测试字体</div>
+</div>
+<script>
+    var ComponentRelations = {
+        props:[],// props传递数据原则：单向数据流(即父组件main向子组件ComponentRelations传值)，比较不会数据混乱
+        data:function () {
+            return {};
+        },
+        template:
+        `
+        <div>
+            <button @click="$emit('larger-text',5)">点击加大字体5px</button>
+        </div>
+        `
+        // 此处的@emit是固定写法
+    };
+    var main = new Vue({
+        el:'#main',
+        data:{
+            size:10
+        },
+        methods:{
+
+        },
+        components:{
+            'component-relations':ComponentRelations
+        }
+    })
+</script>
+</body>
+</html>

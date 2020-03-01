@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>非父子组件间的数据传输</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+<h2>
+    非父子组件间的交互主要通过一个中间的交互中心来进行的
+</h2>
+<hr>
+<div id="main">
+    <button @click="disdTom">销毁tom组件</button>
+    <button @click="disdJerry">销毁jerry组件</button>
+    <tom-component ></tom-component>
+
+    <jerry-component ></jerry-component>
+</div>
+<script>
+    // tom组件
+    Vue.component('tom-component',{
+        data:function () {
+            return {count:0};
+        },
+        template:
+            `
+            <div>
+                <button @click="handleTom">tom按钮</button>
+                <span>{{'计数：' + count}}</span>
+            </div>
+        `,
+        methods:{
+            handleTom:function () { // 点击tom组件触发
+                // 通过交互中心调用其他组件(jerry)事件
+                coreRelation.$emit('jerry-event',2);
+            }
+        },
+        mounted:function() {
+            coreRelation.$on('tom-event',(val)=>{
+                this.count += val;
+        })//监听本组件事件
+        }
+    });
+    // jerry组件
+    Vue.component('jerry-component',{
+        data:function () {
+            return {count:0};
+        },
+        template:
+            `
+            <div>
+                <button @click="handleJerry">jerry按钮</button>
+                <span>{{'计数：' + count}}</span>
+            </div>
+        `,
+        methods:{
+            handleJerry:function () {// 点击jerry组件触发
+                // 通过交互中心调用其他组件(tom)事件
+                coreRelation.$emit('tom-event',1);
+            }
+        },
+        mounted:function() {
+            coreRelation.$on('jerry-event',(val)=>{
+                this.count += val;
+            })//监听本组件事件
+        }
+    });
+    // 交互中心
+    var coreRelation = new Vue({});
+    // 父组件
+    var mian = new Vue({
+        el:'#main',
+        data:{
+
+        },
+        methods:{
+            disdJerry:function () {
+                coreRelation.$off('jerry-event');
+            },
+            disdTom:function () {
+                coreRelation.$off('tom-event');
+            }
+        }
+    });
+
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue-router</title>
+    <script src="../../static/js/vue.js"></script>
+    <script src="../../static/js/vue-router.js"></script>
+</head>
+<body>
+    <div id="main">
+        <router-link to="/zhuye">主页</router-link>
+        <router-link to="/xinwen">新闻</router-link>
+        <router-link to="/caijing">财经</router-link>
+        <router-link to="/yule">娱乐</router-link>
+        <hr>
+        <!--路由占位-->
+        <router-view></router-view>
+    </div>
+<script>
+    var InfoComponent = Vue.component('info-component',{
+        props:['info'],
+        data:function() {
+            return {
+            };
+        },
+        template:`
+            <div>
+                <strong>INFO:</strong>
+                <slot>{{info}}</slot>
+            </div>
+            `
+    });
+    var ZhuYe = {
+        data:function() {
+            return {
+                info:'主页信息'
+            };
+        },
+        template:`
+            <info-component :info="info"></info-component>
+            `
+    };
+    var XinWen = {
+        data:function() {
+            return {
+                info:'新闻信息'
+            };
+        },
+        template:`
+            <info-component :info="info"></info-component>
+            `
+    };
+    var CaiJing = {
+        data:function() {
+            return {
+                info:'财经信息'
+            };
+        },
+        template:`
+            <info-component :info="info"></info-component>
+            `
+    };
+    var YuLe = {
+        data:function() {
+            return {
+                info:'娱乐信息'
+            };
+        },
+        template:`
+            <info-component :info="info"></info-component>
+            `
+    };
+    var router = new VueRouter({
+        routes:[
+        {
+            path:'/',
+            redirect:'/zhuye'   // 重定向
+        },
+        {
+            path:'/zhuye',
+            component:ZhuYe
+        },
+        {
+            path:'/caijing',
+            component:CaiJing
+        },
+        {
+            path:'/xinwen',
+            component:XinWen
+        },
+        {
+            path:'/yule',
+            component:YuLe
+        },
+        ]
+    });
+    var maim = new Vue({
+        el:'#main',
+        router
+    });
+</script>
+</body>
+</html>

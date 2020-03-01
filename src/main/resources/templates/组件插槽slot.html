@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件插槽</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+<div id="main">
+    <slot-component>有一个bug</slot-component>
+    <slot-component>有一个info</slot-component>
+    <slot-component></slot-component>
+    <hr>
+    <hr>
+    <slot-withname>
+        <p slot="header">header头部内容</p>
+        <p>主要内容1</p>
+        <p>主要内容2</p>
+        <p slot="footer">footer底部内容</p>
+        <p slot="footer">footer底部内容</p>
+    </slot-withname>
+    <hr>
+    <hr>
+    <h2>另一种写法，在信息有多条时，可以简略展示</h2>
+    <slot-withname>
+        <template slot="header">
+            <p>头部内容1</p>
+            <p>头部内容2</p>
+        </template>
+        <template>
+            <p>主要内容1</p>
+            <p>主要内容2</p>
+        </template>
+        <template slot="footer">
+            <p>底部内容1</p>
+            <p>底部内容2</p>
+        </template>
+    </slot-withname>
+    <hr>
+    <hr>
+    <h2>作用域插槽</h2>
+    <slot-scope-component :plist="fruits">
+        <template slot-scope="slotProps"> <!--slotProps为自定义名，info为组件中的自定义属性，这样一搞就可以做到父组件对子组件进行加工处理-->
+            <strong v-if="slotProps.info.id==2" style="color:orange;">{{slotProps.info.name}}</strong>
+            <span v-else>{{slotProps.info.name}}</span>
+        </template>
+    </slot-scope-component>
+</div>
+
+<script>
+    //作用域插槽：应用于父组件对子组件进行加工处理
+    Vue.component('slot-scope-component',{
+        props:['plist'],
+        template:
+            `
+            <div>
+                <ul>
+                    <li :key="item.id" v-for="item in plist">
+                        <slot :info="item">{{item.name}}</slot>
+                    </li>
+                </ul>
+            </div>
+            `
+    });
+    // 具名插槽
+    Vue.component('slot-withname',{
+        template:
+            `
+            <div>
+                 <header><slot name="header"></slot></header>
+                 <main><slot></slot></main>
+                 <footer><slot name="footer"></slot></footer>
+            </div>
+            `
+    });
+    Vue.component('slot-component',{
+       template:
+           `
+           <div>
+                <strong>INFO:</strong>
+                <slot>默认信息</slot>
+           </div>
+           `
+    });
+    // 不定义这个实例就生效不了，说明组件是需要在实例内部才能起作用
+    var mian = new Vue({
+        el:'#main',
+        data:{
+            fruits:[
+                {
+                    id:1,
+                    name:'apple'
+                },
+                {
+                    id:2,
+                    name:'orange'
+                },
+                {
+                    id:3,
+                    name:'banana'
+                }
+            ]
+        }
+    })
+</script>
+</body>
+</html>

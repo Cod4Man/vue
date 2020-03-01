@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态路由</title>
+    <script src="../../static/js/vue.js"></script>
+    <script src="../../static/js/vue-router.js"></script>
+</head>
+<body>
+<div id="main">
+    <router-link to="/userA/1">用户AA1</router-link>
+    <router-link to="/userA/2">用户AA2</router-link>
+    <router-link to="/userB/1">用户BB1</router-link>
+    <router-link to="/userB/2">用户BB2</router-link>
+    <router-link to="/userC/1">用户CC1</router-link>
+    <router-link to="/userC/2">用户CC2</router-link>
+    <router-link to="/userD/1">用户DD1</router-link>
+    <router-link to="/userD/2">用户DD2</router-link>
+    <hr>
+    <router-view></router-view>
+</div>
+<script>
+    var UserA = {
+        template:
+            `
+          <div>UserA组件---{{$route.params.uid}}</div>
+          `
+    };
+    var UserB = {
+        props:['uid'],
+        template:
+            `
+          <div>UserB组件---{{uid}}</div>
+          `
+    };
+    var UserC = {
+        props:['uid','uname','uage'], //这样是拿不到id的值的
+        template:
+            `
+          <div>UserC组件 --- {{uid}}---{{uname}} --- {{uage}}</div>
+          `
+    };
+    var UserD = {
+        props:['uid','uname','uage'], //这样是拿不到id的值的
+        template:
+            `
+          <div>UserD组件 --- {{uid}}---{{uname}} --- {{uage}}</div>
+          `
+    };
+    // 路由规则
+    var router = new VueRouter({
+        routes:[
+            {
+                path:'/',
+                redirect:'/userA'
+            },
+            {
+                path:'/userA/:uid', // 使用“:”
+                component:UserA
+            },
+            {
+                path:'/userB/:uid',
+                component:UserB,
+                props:true  // 这样可以通过props传参
+            },
+            {
+                path:'/userC/:uid',
+                component:UserC,
+                props:{'uname':'zhangsan','uage':6}  // 这样可以传递一个对象
+            },
+            {
+                path:'/userD/:uid',
+                component:UserD,
+                props:route => ({'uname':'zhangsan','uage':6,'uid':route.params.uid})  // 这样可以传递一个函数
+            }
+
+        ]
+    });
+    var main = new Vue({
+        el:'#main',
+        data:{},
+        router:router
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>嵌套路由</title>
+    <script src="../../static/js/vue.js"></script>
+    <script src="../../static/js/vue-router.js"></script>
+</head>
+<body>
+<div id="main">
+    <router-link to="/user">用户</router-link>
+    <router-link to="/register">注册</router-link>
+    <hr>
+    <router-view></router-view>
+</div>
+<script>
+
+    var Tab1 = {
+      template:
+          `
+          <div>Tab1组件</div>
+          `
+    };
+    var Tab2 = {
+      template:
+          `
+          <div>Tab2组件</div>
+          `
+    };
+    var User = {
+      template:
+          `
+          <div>User组件</div>
+          `
+    };
+    var Register = {
+      template:
+          `
+          <div>
+            <div>Register组件</div>
+            <hr>
+            <router-link to="/register/tab1">tab1</router-link>
+            <router-link to="/register/tab2">tab2</router-link>
+            <hr>
+            <router-view></router-view>
+          </div>
+
+          `
+    };
+    // 路由规则
+    var router = new VueRouter({
+       routes:[
+           {
+               path:'/',
+               redirect:'/user'
+           },
+           {
+               path:'/user',
+               component:User
+           },
+           {
+               path:'/register',
+               component:Register,
+               children:[
+                   {
+                       path:'/register/tab1',
+                       component:Tab1
+                   },
+                   {
+                       path:'/register/tab2',
+                       component:Tab2
+                   }
+               ]
+           }
+       ]
+    });
+    var main = new Vue({
+       el:'#main',
+       data:{},
+       router:router
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>后台交互</title>
+    <script src="/js/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="main">
+    <div>数据一：{{data1}}</div>
+    <button @click="changeData">变化数据</button>
+</div>
+
+<script>
+    var main = new Vue({
+        el:'#main',
+        data:{
+            data1:''
+        },
+        methods:{
+            changeData:function () {
+                var that = this;
+                axios.get("http://localhost:8080/data1")
+                    .then((value) => {
+                        console.log(value.data);
+                    that.data1 = value.data;
+                }).then((response)=> {
+                    that.data1 = response;
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>
